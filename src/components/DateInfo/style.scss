@@ -1,0 +1,26 @@
+.info{
+  @import url('https://fonts.googleapis.com/css?family=Signika');
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.DateInfo-Date-Layout {
+  font-family: 'Signika', cursive;;
+  display: flex;
+}
+
+.DateInfo-Date {
+  font-size: 2em;
+  margin-right: 0.3em;
+}
+
+.DateInfo-Month-Year-Layout {
+  font-family: 'Signika', cursive;
+  
+}
+
+.DateInfo-Day{
+  font-family: 'Signika', cursive;
+
+}
