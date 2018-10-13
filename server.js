@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
+app.get("/items", (req, res) => {
   const { dateString } = req.query;
   const start = new Date(dateString);
   const end = new Date(dateString);
@@ -23,19 +23,18 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/", async (req, res) => {
+app.post("/item", async (req, res) => {
   const { title, check, date, deadLine } = req.body;
-  console.log(date);
   await db.insert({ title, check, deadLine, createAt: new Date(date) }, (err, newDocs) => {
     if (err) {
       res.status(500).json(err);
     } else {
-      return res.status(200).json(newDocs);
+      res.status(200).json(newDocs);
     }
   });
 });
 
-app.delete("/", async (req, res) => {
+app.delete("/item", async (req, res) => {
   const { _id } = req.body;
   await db.remove({ _id }, (err, result) => {
     if (err) {
@@ -46,19 +45,18 @@ app.delete("/", async (req, res) => {
   });
 });
 
-app.put("/check", async (req, res) => {
+app.put("/item/check", async (req, res) => {
   const { _id, check } = req.body;
   await db.update({ _id }, { $set: { check } }, (err, result) => {
     if (err) {
       res.status(500).json(err);
     } else {
-      console.log(result);
       res.status(200).json(result);
     }
   });
 });
 
-app.put("/deadLine", async (req, res) => {
+app.put("/item/deadLine", async (req, res) => {
   const { _id, deadLine } = req.body;
   await db.update({ _id }, { $set: { deadLine } }, (err, result) => {
     if (err) {

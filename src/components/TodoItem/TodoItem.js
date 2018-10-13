@@ -6,7 +6,7 @@ import "./style.scss";
 import { FaRegCircle, FaCheckCircle, FaEraser } from "react-icons/fa";
 
 const format = "h:mm a";
-const now = moment().hour(0).minute(0);
+const now = moment().hour(new Date().getHours()).minute(0);
 
 class TodoItem extends React.Component {
   state = {
@@ -27,7 +27,7 @@ class TodoItem extends React.Component {
 
   stylingByCheckStatus = (checkFlag) => {
     if (checkFlag) {
-      return { textDecorationLine: "line-through", color: "grey" };
+      return { textDecoration: "line-through", color: "grey" };
     } else {
       return null;
     }
@@ -35,9 +35,7 @@ class TodoItem extends React.Component {
 
   showRestTime = (deadLine) => {
     const date = moment(deadLine, "YYYY-MM-DDTHH:mm:ss.SSS").add(9, "hour");
-    console.log(date.fromNow());
     return date.fromNow();
-    // console.log(moment(deadLine.slice(11, 19)), "");
   };
 
   render () {

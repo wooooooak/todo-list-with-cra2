@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import moment from "moment";
 
 import Template from "./components/Template";
 import DateInfo from "./components/DateInfo";
@@ -9,14 +10,13 @@ import TodoList from "./components/TodoList";
 class App extends Component {
   state = {
     selectedDate: new Date(),
-    color: "black",
     items: [],
     sortingState: "asc"
   };
 
   fetchData = async () => {
     const now = new Date();
-    const result = await axios.get("http://localhost:8080/", {
+    const result = await axios.get("http://localhost:8080/items", {
       params: {
         dateString: now.toDateString()
       }
@@ -36,47 +36,44 @@ class App extends Component {
   };
 
   onClickEnroll = async (title) => {
-    // 날짜는 선택된 날짜지만 시간은 지금 현재 시간으로 해야 시간순 정렬됨
     const time = this.state.selectedDate;
     const now = new Date();
     time.setHours(now.getHours());
     time.setMinutes(now.getMinutes());
     time.setSeconds(now.getSeconds());
-
-    console.log(time);
-    // console.log(new Date().getHours());
-    const newItems = this.state.items;
-    const result = await axios({
-      method: "post",
-      url: "http://localhost:8080/",
-      data: {
-        title: title,
-        check: false,
-        date: time.toISOString(),
-        deadLine: null
-      }
-    });
-    newItems.push(result.data);
-    this.setState({
-      items: newItems
-    });
+    try {
+      const result = await axios({
+        method: "post",
+        url: "http://localhost:8080/item",
+        data: {
+          title: title,
+          check: false,
+          date: time.toISOString(),
+          deadLine: null
+        }
+      });
+      const newItems = this.state.items;
+      newItems.push(result.data);
+      this.setState({
+        items: newItems
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   onDelete = async (_id) => {
-    console.log(_id);
     try {
       await axios({
         method: "delete",
-        url: "http://localhost:8080/",
+        url: "http://localhost:8080/item",
         data: {
           _id
         }
       });
-      const index = this.findIndex(this.state.items, "_id", _id);
-      console.log("index : ", index);
+      const indexOfMatchedItem = this.findIndex(this.state.items, "_id", _id);
       const newItems = this.state.items;
-      newItems.splice(index, 1);
-      console.log(newItems);
+      newItems.splice(indexOfMatchedItem, 1);
       this.setState({
         items: newItems
       });
@@ -88,7 +85,7 @@ class App extends Component {
   onChangeCurrentDate = async (difference) => {
     const date = this.state.selectedDate.getDate();
     const newDate = new Date(this.state.selectedDate.setDate(date + difference));
-    const result = await axios("http://localhost:8080/", {
+    const result = await axios("http://localhost:8080/items", {
       params: {
         dateString: newDate.toDateString()
       }
@@ -100,37 +97,46 @@ class App extends Component {
   };
 
   onClickDoneButton = async (_id, check) => {
-    await axios({
-      method: "put",
-      url: "http://localhost:8080/check",
-      data: {
-        _id,
-        check: !check
-      }
-    });
-    const index = this.findIndex(this.state.items, _id);
-    const newItems = this.state.items;
-    newItems[index].check = !newItems[index].check;
-    this.setState({
-      items: newItems
-    });
+    try {
+      await axios({
+        method: "put",
+        url: "http://localhost:8080/item/check",
+        data: {
+          _id,
+          check: !check
+        }
+      });
+      const indexOfMatchedItem = this.findIndex(this.state.items, "_id", _id);
+      const newItems = this.state.items;
+      newItems[indexOfMatchedItem].check = !newItems[indexOfMatchedItem].check;
+      this.setState({
+        items: newItems
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   onChangeDeadLineDate = async (_id, deadLine) => {
-    await axios({
-      method: "put",
-      url: "http://localhost:8080/deadLine",
-      data: {
-        _id,
-        deadLine: deadLine
-      }
-    });
-    const index = this.findIndex(this.state.items, _id);
-    const newItems = this.state.items;
-    newItems[index].deadLine = deadLine;
-    this.setState({
-      items: newItems
-    });
+    try {
+      await axios({
+        method: "put",
+        url: "http://localhost:8080/item/deadLine",
+        data: {
+          _id,
+          deadLine: deadLine
+        }
+      });
+      const indexOfMatchedItem = this.findIndex(this.state.items, "_id", _id);
+      const newItems = this.state.items;
+      const newDeadLine = moment(deadLine, "YYYY-MM-DDTHH:mm:ss.SSS").add(0, "hour");
+      newItems[indexOfMatchedItem].deadLine = newDeadLine.toISOString();
+      this.setState({
+        items: newItems
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   onClickSorting = () => {
@@ -138,8 +144,10 @@ class App extends Component {
     newArr.sort((a, b) => {
       if (a.deadLine > b.deadLine) {
         return this.state.sortingState === "asc" ? -1 : 1;
-      } else {
+      } else if (a.deadLine < b.deadLine) {
         return this.state.sortingState === "asc" ? 1 : -1;
+      } else {
+        return 0;
       }
     });
     this.setState({
@@ -149,7 +157,6 @@ class App extends Component {
   };
 
   render () {
-    console.log(this.state.items);
     return (
       <Template
         dateInfo={<DateInfo date={this.state.selectedDate} onChangeDate={this.onChangeCurrentDate} />}
