@@ -1,0 +1,32 @@
+.Form-input {
+  margin-top: 1em;
+  width: 60%;
+  background-color: transparent;
+  border-style: none;
+  font-size: 1.5em;
+  border-bottom: 1px solid #2EC4B6;
+  &:focus{
+    outline: none;
+  }
+}
+
+.Form-Button {
+  @import url('https://fonts.googleapis.com/css?family=Jua');
+  font-family: 'Jua', sans-serif;
+  font-size: 1.2em;
+  width: 5.3em;
+  height: 2.5em;
+  margin-left: 1em;
+  background: #2EC4B6;
+  border: none;
+  box-shadow: 2px 2px 2px rgb(158, 157, 157);
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    background: black;
+    color: #2EC4B6;
+  }
+}
+

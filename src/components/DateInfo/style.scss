@@ -1,26 +1,27 @@
 .info{
-  @import url('https://fonts.googleapis.com/css?family=Signika');
+  @import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+  font-family: 'Fredoka One', cursive;
   display: flex;
   justify-content: space-around;
   align-items: center;
-}
 
-.DateInfo-Date-Layout {
-  font-family: 'Signika', cursive;;
-  display: flex;
-}
+  .DateInfo-icon {
+    font-size: 1.7em;
+    cursor: pointer;
+  }
 
-.DateInfo-Date {
-  font-size: 2em;
-  margin-right: 0.3em;
-}
+  .DateInfo-Date-Layout {
+    display: flex;
+  }
 
-.DateInfo-Month-Year-Layout {
-  font-family: 'Signika', cursive;
+  .DateInfo-Date {
+    font-size: 2em;
+    margin-right: 0.3em;
+  }
   
-}
+  .DateInfo-Day{
+    font-size: 1.3em;
+  }
+}  
 
-.DateInfo-Day{
-  font-family: 'Signika', cursive;
 
-}

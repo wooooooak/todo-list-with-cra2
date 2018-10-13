@@ -1,0 +1,56 @@
+.TodoItem-Wrapper {
+  display: flex;
+  align-items: center;
+  height: 3em;
+  padding: 0 3em;
+  cursor: pointer;
+  
+  .TodoItem-Delete{
+    color: #F16B6F;
+    position: relative;
+    left: -1em;
+    opacity: 0;
+    &:hover {
+      font-size: 1.5em;
+    }
+  }
+
+  .TodoItem-Title{
+    flex: 8;
+    max-width: 70%;
+    word-break:break-all;
+  }
+  
+  .TodoItem-DeadLine{
+    color: gray;
+    margin: 0 0 0 10px;
+    width: 15%;
+    font-size: 0.7em;
+    // position: relative;
+    // right: 0%;
+  }
+
+  .TodoItem-Icon{
+    color: #2EC4B6;
+    flex: 1;
+    .TodoItem-Check-Icon {
+      font-size: 1.3em;
+    }
+  }
+  
+  &:hover{
+    background-color: #D8E6E7;
+    .TodoItem-Delete{
+      opacity: 1;
+    }
+  }
+}
+
+.hidden {
+  width: 100%;
+  margin: 0 auto;
+  .time-picker{
+    margin: 0 auto;
+    
+  }
+}
