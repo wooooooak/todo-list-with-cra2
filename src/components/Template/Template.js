@@ -1,14 +1,11 @@
 import React from "react";
 import { FaQuestionCircle, FaTimes } from "react-icons/fa";
-import HanComLogo from "./hancom.PNG";
 import "./style.scss";
 
 const Template = ({ dateInfo, form, children, onClickSorting }) => {
   return (
     <div class="Template-Layout">
-      <div class="Logo">
-        <img class="hancom-logo" src={HanComLogo} alt="HANCOM" /> <FaTimes /> <div class="name">이용준</div>
-      </div>
+      <div class="Logo" />
       <div class="Date-Info-Layout">{dateInfo}</div>
       <div class="Form-Layout">{form}</div>
       <div class="Sorting" onClick={onClickSorting}>
